@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+</head>
+<style>
+    input{
+        width: 150px;
+        height: 30px;
+        font-size: 20px;
+    }
+</style>
+<body>
+    <script type="module" defer >
+        const loginBtn = document.getElementById("submit");
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+import {
+  getDatabase,
+  ref,
+  update,
+} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAJUJ550KQNP9DsO_SrNDNk_eKXGqRynCo",
+    authDomain: "webgos-b8644.firebaseapp.com",
+    projectId: "webgos-b8644",
+    storageBucket: "webgos-b8644.appspot.com",
+    messagingSenderId: "85472568453",
+    appId: "1:85472568453:web:0352cc9356e6d1d92f35ec"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const database = getDatabase(app);
+
+loginBtn.addEventListener("click", function (event) {
+  event.preventDefault();
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+
+      const user_data = {
+        last_login: Date.now(),
+      };
+
+      
+
+      const dbRef = ref(database, "users/" + user.uid);
+      update(dbRef, user_data)
+        .then(() => {
+          window.location = "../index.html"
+        })
+        .catch((error) => {
+          console.error("Error updating user data:", error);
+          alert("Error updating user data.");
+        });
+    })
+});
+    </script>
+    <input type="email" id="email">
+    <input type="password" id="password">
+    <button id="submit">Submit</button>
+
+
+
+
+
+
+    <h1>LOGin zhasaisyndar</h1>
+</body>
+</html>
