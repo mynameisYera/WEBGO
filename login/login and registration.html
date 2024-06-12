@@ -1,0 +1,140 @@
+<script>
+    //Login
+    const loginBtn = document.getElementById("submit");
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+import {
+  getDatabase,
+  ref,
+  update,
+} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyDdtrp4psOzggJFG1CIxrAGQE1BKPcyxNA",
+    authDomain: "pdd-app-7df86.firebaseapp.com",
+    projectId: "pdd-app-7df86",
+    storageBucket: "pdd-app-7df86.appspot.com",
+    messagingSenderId: "917948376821",
+    appId: "1:917948376821:web:708416b4710452b8bec7bc"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const database = getDatabase(app);
+
+loginBtn.addEventListener("click", function (event) {
+  event.preventDefault();
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+
+      const user_data = {
+        last_login: Date.now(),
+      };
+
+      
+
+      const dbRef = ref(database, "users/" + user.uid);
+      update(dbRef, user_data)
+        .then(() => {
+          window.location = "/index.html"
+        })
+        .catch((error) => {
+          console.error("Error updating user data:", error);
+          alert("Error updating user data.");
+        });
+    })
+    .catch(function (error) {
+      alert('error')
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+    //Registration
+
+    const registerBtn = document.getElementById("registerBtn");
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-analytics.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+import {
+  getDatabase,
+  ref,
+  set,
+} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDdtrp4psOzggJFG1CIxrAGQE1BKPcyxNA",
+  authDomain: "pdd-app-7df86.firebaseapp.com",
+  projectId: "pdd-app-7df86",
+  storageBucket: "pdd-app-7df86.appspot.com",
+  messagingSenderId: "917948376821",
+  appId: "1:917948376821:web:708416b4710452b8bec7bc"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const database = getDatabase(app);
+
+registerBtn.addEventListener("click", function (event) {
+  event.preventDefault();
+  console.log("here");
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const full_name = document.getElementById("full_name").value;
+
+
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      console.log(userCredential.user)
+      const user_data = {
+        email: email,
+        full_name: full_name,
+        last_login: Date.now(),
+      };
+
+      const dbRef = ref(database, "users/" + user.uid);
+      set(dbRef, user_data);
+
+      window.location = "/login_page/login.html";
+    })
+    .catch((error) => {
+      const errorMessage = error;
+      alert(errorMessage);
+    });
+});
+
+const golog = document.getElementById('golog')
+
+
+
+golog.onclick = function(){
+  window.location.href = '/login_page/login.html'
+}
+
+
+
+</script>
