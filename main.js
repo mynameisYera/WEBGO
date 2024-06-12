@@ -16,7 +16,7 @@ closemodal.onclick = function(){
     windowM.style.top = "-40%"
 }
 
-
+//BURGER
 burger.onclick = function(){
     container.style.display = "none"
     burgerler.style.display = "flex"
@@ -64,6 +64,9 @@ rightbtn.onclick = function(){
     }
 }
 
+
+
+//TABS
 const content = document.getElementById("content")
 const tab1 = document.getElementById("tab1")
 const tab2 = document.getElementById("tab2")
