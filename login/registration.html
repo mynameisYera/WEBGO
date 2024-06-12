@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+</head>
+<body>
+    <script type="module" defer >
+        
+    const registerBtn = document.getElementById("registerBtn");
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-analytics.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+import {
+  getDatabase,
+  ref,
+  set,
+} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAJUJ550KQNP9DsO_SrNDNk_eKXGqRynCo",
+    authDomain: "webgos-b8644.firebaseapp.com",
+    projectId: "webgos-b8644",
+    storageBucket: "webgos-b8644.appspot.com",
+    messagingSenderId: "85472568453",
+    appId: "1:85472568453:web:0352cc9356e6d1d92f35ec"
+  };
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const database = getDatabase(app);
+
+registerBtn.addEventListener("click", function (event) {
+  event.preventDefault();
+  console.log("here");
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      console.log(userCredential.user)
+      const user_data = {
+        email: email,
+        last_login: Date.now(),
+      };
+
+      const dbRef = ref(database, "users/" + user.uid);
+      set(dbRef, user_data);
+
+      window.location = "./login.html";
+    })
+    .catch((error) => {
+      const errorMessage = error;
+      alert(errorMessage);
+    });
+});
+
+const golog = document.getElementById('golog')
+
+
+
+golog.onclick = function(){
+  window.location.href = './login.html'
+}
+
+    </script>
+    <input type="email" id="email">
+    <input type="password" id="password">
+    <button id="registerBtn">register</button>
+
+
+
+
+    <h1>Tikelesinder</h1>
+</body>
+</html>
